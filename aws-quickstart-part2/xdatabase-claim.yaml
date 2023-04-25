@@ -1,0 +1,7 @@
+apiVersion: custom-api.example.org/v1alpha1
+kind: Database
+metadata:
+  name: claimed-database
+  namespace: my-crossplane-namespace
+spec:
+  region: "US"

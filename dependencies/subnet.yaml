@@ -1,0 +1,50 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xsubnets.claythorn.com
+spec:
+  group: claythorn.com
+  names:
+    kind: XSubnet
+    plural: xsubnets
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties: {}
+  claimNames:
+    kind: Subnet
+    plural: subnets
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: my-subnets
+spec:
+  compositeTypeRef:
+    apiVersion: claythorn.com/v1alpha1
+    kind: XSubnet
+  resources:
+    - name: dev-subnet
+      base:
+        apiVersion: ec2.aws.upbound.io/v1beta1
+        kind: Subnet
+        metadata:
+          name: dev-subnet
+        spec:
+          forProvider:
+            region: us-east-1
+            cidrBlock: 10.0.0.0/24
+#            vpcId: vpc-02fdee3698334f407
+#            vpcIdRef:
+#              name: claimed-vpcs-7kdzp-cqjf9
+            vpcIdSelector:
+              Name: dev-vpc
+            mapPublicIPOnLaunch: false

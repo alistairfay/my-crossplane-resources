@@ -1,0 +1,6 @@
+apiVersion: claythorn.com/v1alpha1
+kind: Subnet
+metadata:
+  name: claimed-subnets
+  namespace: my-crossplane-namespace
+spec: {}

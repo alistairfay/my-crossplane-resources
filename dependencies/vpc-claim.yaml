@@ -1,0 +1,6 @@
+apiVersion: claythorn.com/v1alpha1
+kind: VPC
+metadata:
+  name: claimed-vpcs
+  namespace: my-crossplane-namespace
+spec: {}

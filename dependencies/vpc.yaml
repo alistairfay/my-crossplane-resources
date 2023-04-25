@@ -1,0 +1,67 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xvpcs.claythorn.com
+spec:
+  group: claythorn.com
+  names:
+    kind: XVPC
+    plural: xvpcs
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties: {}
+            status:
+              type: object
+              properties:
+                id:
+                  description: vpc id
+                  type: string
+  claimNames:
+    kind: VPC
+    plural: vpcs
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: my-vpcs
+spec:
+  compositeTypeRef:
+    apiVersion: claythorn.com/v1alpha1
+    kind: XVPC
+  resources:
+    - name: dev-vpc
+      base:
+        apiVersion: ec2.aws.upbound.io/v1beta1
+        kind: VPC
+        metadata:
+          name: dev-vpc
+        spec:
+          forProvider:
+            region: us-east-1
+            cidrBlock: 10.0.0.0/16
+            tags:
+              Name: dev-vpc
+              name: dev-vpc
+      patches:
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.atProvider.id
+          toFieldPath: status.id
+#    - name: prod-vpc
+#      base:
+#        apiVersion: ec2.aws.upbound.io/v1beta1
+#        kind: VPC
+#        metadata:
+#          name: prod-vpc
+#        spec:
+#          forProvider:
+#            region: us-east-1
+#            cidrBlock: 10.0.0.0/16
