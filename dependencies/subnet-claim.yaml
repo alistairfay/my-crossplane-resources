@@ -3,4 +3,6 @@ kind: Subnet
 metadata:
   name: claimed-subnets
   namespace: my-crossplane-namespace
-spec: {}
+spec:
+  parameters:
+    vpcId: vpc-0b4ea33804ddb0860

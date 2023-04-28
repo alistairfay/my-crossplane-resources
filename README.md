@@ -52,8 +52,8 @@ kubectl apply -f dependencies/vpc-xrd.yaml
 kubectl apply -f dependencies/vpc-claim.yaml
 kubectl get composition/my-vpcs
 kubectl get xrd/xvpcs.custom-api.example.org
-kubectl get claim claimed-vpcs -n my-crossplane-namespace
-kubectl describe claim claimed-vpcs -n my-crossplane-namespace
+kubectl get subnet.claythorn.com/claimed-subnets -n my-crossplane-namespace
+kubectl describe subnet.claythorn.com/claimed-subnets -n my-crossplane-namespace
 kubectl get VPC.ec2.aws.upbound.io -o json | jq '.items[].status.atProvider.id'
 ```
 

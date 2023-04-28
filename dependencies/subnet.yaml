@@ -18,7 +18,16 @@ spec:
           properties:
             spec:
               type: object
-              properties: {}
+              properties:
+                parameters:
+                  type: object
+                  properties:
+                    vpcId:
+                      type: string
+                  required:
+                    - vpcId
+              required:
+                - parameters
   claimNames:
     kind: Subnet
     plural: subnets
@@ -42,9 +51,15 @@ spec:
           forProvider:
             region: us-east-1
             cidrBlock: 10.0.0.0/24
-#            vpcId: vpc-02fdee3698334f407
+            vpcId:
 #            vpcIdRef:
 #              name: claimed-vpcs-7kdzp-cqjf9
-            vpcIdSelector:
-              Name: dev-vpc
+#            vpcIdSelector:
+#              Name: dev-vpc
             mapPublicIPOnLaunch: false
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.vpcId
+          toFieldPath: spec.forProvider.vpcId
+          policy:
+            fromFieldPath: Required
